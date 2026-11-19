@@ -5,16 +5,15 @@ export const SITE = {
   short: "ugoki lab",
   kanji: "動き",
   seal: "動",
-  meaning: "ugoki means “movement” in Japanese",
   url: "https://ugoki-lab.vercel.app",
-  repo: "https://github.com/nonberw/ugoki-lab",
-  github: "https://github.com/nonberw",
-  // Where "Join the lab" points. Swap for a mailto: link once the lab has an email.
-  contact: "https://github.com/nonberw/ugoki-lab/issues/new?title=I%20want%20to%20join%20Ugoki%20Lab&body=Who%20I%20am%20and%20how%20I%20can%20help%3A%0A",
+  // Where "Join the lab" sends people. Leave empty until the lab has a public email,
+  // e.g. "mailto:hello@your-domain". While empty, the Join section says contact is coming soon.
+  contact: "",
 };
 
 export const NAV = [
-  { label: "Work", href: "#work" },
+  { label: "About", href: "#about" },
+  { label: "Model", href: "#model" },
   { label: "Research", href: "#research" },
   { label: "Roadmap", href: "#roadmap" },
 ];
@@ -30,6 +29,46 @@ export const WORDMARK_WIDE = [
   " `V88V\"V8P' `8oooooo.  `Y8bod8P' o888o o888o o888o      o888o `Y888\"\"8o  `Y8bod8P' ",
   "            d\"     YD                                                              ",
   "            \"Y88888P'                                                              ",
+];
+
+// Hero playground. Illustrative only: the open model is in training, and the card says so.
+export const DEMOS = [
+  {
+    key: "Rover",
+    prompt: "A small rover that maps my room and comes back to charge.",
+    lines: [
+      "plan    device graph: 14 parts, 22 links",
+      "parts   ESP32-S3, 2 gear motors, motor driver, lidar, 2S battery",
+      "wire    lidar on I2C, motors on two PWM pins, battery sense on ADC",
+      "code    firmware for driving, mapping and docking",
+      "check   motor stall current is under the driver limit: ok",
+      "build   parts list, cost and a 9-step assembly guide",
+    ],
+  },
+  {
+    key: "Robot arm",
+    prompt: "A 4-axis desk arm that sorts small parts by color.",
+    lines: [
+      "plan    device graph: 11 parts, 18 links",
+      "parts   4 servos, camera, microcontroller, 5 V supply",
+      "wire    servos on a PWM board, camera on USB",
+      "code    inverse kinematics and a color sorter",
+      "check   holding torque at full reach: ok",
+      "build   printable links, parts list, wiring sheet",
+    ],
+  },
+  {
+    key: "Plant care",
+    prompt: "A sensor that waters my plants and tells me when it did.",
+    lines: [
+      "plan    device graph: 7 parts, 9 links",
+      "parts   microcontroller, soil probe, pump, relay, water level switch",
+      "wire    probe on ADC, pump through the relay",
+      "code    watering schedule and phone notifications",
+      "check   pump never runs on an empty tank: ok",
+      "build   enclosure, parts list, 6-step guide",
+    ],
+  },
 ];
 
 export const PROBLEMS = [
@@ -50,93 +89,49 @@ export const PROBLEMS = [
   },
 ];
 
-export const BUILD = [
-  {
+export const BUILD = {
+  humanoids: {
     title: "Affordable humanoids",
-    body: "Open humanoid designs a school or small lab can build, repair and improve.",
+    body: "Open humanoid designs a school or small lab can build, repair and improve. Standard parts, printed structure, an open bill of materials.",
     image: "/media/h_tsukuba.jpg",
     alt: "Two research humanoid robots on display stands",
-    credit: "Photo: Syced, CC0",
+    credit: "Reference photo: Syced, CC0",
   },
-  {
+  model: {
     title: "An open engineering model",
-    body: "An LLM for physical AI that turns a description into a real project: CAD, wiring, firmware, parts.",
-    image: "/media/proto-arm.png",
-    alt: "Render of a generated robot arm project with its electronics",
+    body: "An LLM for physical AI that turns a description into a real project: CAD, wiring, firmware and parts.",
   },
-  {
+  sim: {
     title: "Sim-to-real research",
     body: "Simulation, learning and control that run on cheap machines, then move to real robots.",
-    clip: "/media/yard",
-    alt: "Simulated yard with ten legged robots and scattered objects",
   },
-  {
+  impact: {
     title: "Problems that matter",
     body: "We pick projects by their impact on people’s lives, not by revenue. Then we publish everything.",
     image: "/media/h_dasa.jpg",
     alt: "Close-up of a humanoid robot head and torso",
-    credit: "Photo: Sven Volkens, CC BY-SA 4.0",
+    credit: "Reference photo: Sven Volkens, CC BY-SA 4.0",
   },
-];
-
-export const PROJECTS = [
-  {
-    name: "ARMageddon",
-    what: "6-DoF inverse kinematics from scratch",
-    metric: "99.6% success on 500 random poses, about 0.7 ms per solve",
-    clip: "/media/arm",
-    href: "https://github.com/nonberw/armageddon",
-  },
-  {
-    name: "ZOOMIES",
-    what: "Quadruped and PPO written from scratch",
-    metric: "Survives a 1.5 m/s kick 93% of the time",
-    clip: "/media/zoomies",
-    href: "https://github.com/nonberw/zoomies",
-  },
-  {
-    name: "COPYCAT",
-    what: "Imitation learning for a robot arm",
-    metric: "Places the cube 98% of the time on unseen layouts",
-    clip: "/media/copycat",
-    href: "https://github.com/nonberw/copycat",
-  },
-  {
-    name: "YOINK",
-    what: "Vision and grasping with no machine learning",
-    metric: "810 of 810 cubes sorted, 0.2 mm position error",
-    clip: "/media/yoink",
-    href: "https://github.com/nonberw/yoink",
-  },
-  {
-    name: "SPUD",
-    what: "Robot simulation for weak laptops",
-    metric: "65,536 robots walking at once on a laptop CPU",
-    clip: "/media/world",
-    href: "https://github.com/nonberw/spud",
-  },
-];
+};
 
 export const PIPELINE = [
-  { verb: "Describe", body: "“A rover that maps my room”" },
-  { verb: "Plan", body: "One device graph: parts, links, constraints" },
-  { verb: "Generate", body: "CAD, wiring and firmware from that graph" },
-  { verb: "Verify", body: "Physics and electrical checks before building" },
-  { verb: "Build", body: "Parts list, assembly guide and cost" },
+  { verb: "Describe", body: "Say what the device should do, in plain words." },
+  { verb: "Plan", body: "One device graph: parts, links, constraints." },
+  { verb: "Generate", body: "CAD, wiring and firmware from that graph." },
+  { verb: "Verify", body: "Physics and electrical checks before anything is built." },
+  { verb: "Build", body: "Parts list, assembly guide and cost." },
 ];
 
 export const RESEARCH = [
   {
     name: "SUSS",
     question: "What does a transformer learn when it adapts to unknown physics in context?",
-    status: "Pre-registered, paper and models released",
-    href: "https://nonberw.github.io/suss",
+    status: "Pre-registered, released",
   },
   {
     name: "LISTEN",
     question: "When do robot policies learn to follow their instructions instead of the scene?",
-    status: "Pre-registered, paper released",
-    href: "https://nonberw.github.io/listen",
+    status: "Pre-registered, released",
   },
   {
     name: "VIBES",
@@ -147,12 +142,16 @@ export const RESEARCH = [
 
 export const OPEN = ["MIT license", "open weights", "open datasets", "open hardware", "公開"];
 
-export const TEAM = [
-  { big: "2 yrs", label: "Defense technology", body: "Hardware and software built to a reliability bar." },
-  { big: "GovTech", label: "State digitization, Kazakhstan", body: "Large systems with real users at a state company." },
-  { big: "3+ yrs", label: "Machine learning", body: "Training, evaluating and shipping models." },
-  { big: "Caltech, Berkeley", label: "Research experience", body: "Research work with Caltech and UC Berkeley." },
-  { big: "3", label: "Servers in the lab", body: "For robot hardware, model training and simulation." },
+export const STATS = [
+  { value: 2, suffix: " yrs", label: "Defense technology", body: "Hardware and software built to a reliability bar." },
+  { value: 3, suffix: "+ yrs", label: "Machine learning", body: "Training, evaluating and shipping models." },
+  { value: 3, suffix: "", label: "Servers in the lab", body: "For robot hardware, model training and simulation." },
+  { value: 3, suffix: "", label: "Pre-registered studies", body: "Hypotheses written down before the first result." },
+];
+
+export const FACTS = [
+  { big: "GovTech", label: "State digitization in Kazakhstan, at a state company with real users." },
+  { big: "Caltech, Berkeley", label: "Research work with Caltech and UC Berkeley." },
 ];
 
 export const ROADMAP = [

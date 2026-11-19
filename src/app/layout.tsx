@@ -1,7 +1,13 @@
 import type { Metadata, Viewport } from "next";
-import { Geist, Geist_Mono, Noto_Serif_JP } from "next/font/google";
+import { Geist, Geist_Mono, Newsreader, Noto_Serif_JP } from "next/font/google";
 import "./globals.css";
 
+const newsreader = Newsreader({
+  variable: "--font-newsreader",
+  subsets: ["latin"],
+  style: ["normal", "italic"],
+  weight: ["400", "500"],
+});
 const geistSans = Geist({ variable: "--font-geist-sans", subsets: ["latin"] });
 const geistMono = Geist_Mono({ variable: "--font-geist-mono", subsets: ["latin"] });
 const notoSerifJP = Noto_Serif_JP({
@@ -19,13 +25,12 @@ export const metadata: Metadata = {
   openGraph: {
     title: "Ugoki Lab · open physical AI",
     description: "Affordable humanoids and an open engineering model, built in the open.",
-    images: ["/media/world.jpg"],
   },
 };
 
 export const viewport: Viewport = {
   themeColor: [
-    { media: "(prefers-color-scheme: light)", color: "#f3f3f1" },
+    { media: "(prefers-color-scheme: light)", color: "#efeeec" },
     { media: "(prefers-color-scheme: dark)", color: "#0c0c0c" },
   ],
 };
@@ -38,7 +43,7 @@ export default function RootLayout({ children }: LayoutProps<"/">) {
     <html
       lang="en"
       suppressHydrationWarning
-      className={`${geistSans.variable} ${geistMono.variable} ${notoSerifJP.variable} antialiased`}
+      className={`${newsreader.variable} ${geistSans.variable} ${geistMono.variable} ${notoSerifJP.variable} antialiased`}
     >
       <head>
         <script dangerouslySetInnerHTML={{ __html: themeScript }} />

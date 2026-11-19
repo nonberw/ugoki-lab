@@ -1,28 +1,19 @@
 import Image from "next/image";
-import { ArrowUpRight, ArrowRight } from "@phosphor-icons/react/dist/ssr";
+import { ArrowRight } from "@phosphor-icons/react/dist/ssr";
 import { WakeGlyph } from "@/components/ui/background-ascii-wake";
+import { AsciiDitherMedia } from "@/components/ui/background-ascii-dither";
 import { WordmarkFooter } from "@/components/ui/wordmark-footer";
-import { ScrambleText } from "@/components/ui/scramble-text";
+import { NumberTicker } from "@/components/ui/count-up";
 import { AsciiWordmark } from "@/components/ascii-wordmark";
+import { ModelPlayground } from "@/components/model-playground";
+import { PipelineFlow } from "@/components/pipeline-flow";
 import { SiteHeader } from "@/components/site-header";
-import { Clip } from "@/components/clip";
 import { Reveal } from "@/components/reveal";
-import {
-  BUILD,
-  OPEN,
-  PIPELINE,
-  PROBLEMS,
-  PROJECTS,
-  RESEARCH,
-  ROADMAP,
-  ROLES,
-  SITE,
-  TEAM,
-  WORDMARK_WIDE,
-} from "@/lib/content";
+import { Seal } from "@/components/seal";
+import { BUILD, FACTS, OPEN, PROBLEMS, RESEARCH, ROADMAP, ROLES, SITE, STATS, WORDMARK_WIDE } from "@/lib/content";
 
 const wrap = "mx-auto w-full max-w-[1400px] px-5 md:px-10";
-const h2 = "text-3xl font-medium tracking-[-0.03em] leading-[1.08] md:text-5xl";
+const h2 = "font-display text-4xl font-normal tracking-[-0.02em] leading-[1.08] md:text-[56px]";
 const eyebrow = "font-mono text-[11px] tracking-[0.16em] text-muted uppercase";
 
 export default function Home() {
@@ -31,14 +22,16 @@ export default function Home() {
       <SiteHeader />
       <main>
         <Hero />
+        <OpenBlock />
         <About />
+        <div className="hatch" aria-hidden="true" />
         <Build />
-        <Work />
         <Model />
+        <div className="hatch" aria-hidden="true" />
         <Research />
-        <OpenByDefault />
         <Team />
         <Roadmap />
+        <div className="hatch" aria-hidden="true" />
         <Join />
       </main>
       <WordmarkFooter
@@ -52,18 +45,20 @@ export default function Home() {
             links: [
               { label: "About", href: "#about" },
               { label: "What we build", href: "#build" },
-              { label: "Roadmap", href: "#roadmap" },
-              { label: "Join the lab", href: "#join" },
+              { label: "The model", href: "#model" },
             ],
           },
-          { title: "Projects", links: PROJECTS.map((p) => ({ label: p.name, href: p.href })) },
           {
-            title: "Research",
-            links: RESEARCH.filter((r) => r.href).map((r) => ({ label: r.name, href: r.href! })),
+            title: "Work",
+            links: [
+              { label: "Research", href: "#research" },
+              { label: "Team", href: "#team" },
+              { label: "Roadmap", href: "#roadmap" },
+            ],
           },
+          { title: "Contact", links: [{ label: "Join the lab", href: "#join" }] },
         ]}
-        credits={["Photos: Syced (CC0), Sven Volkens (CC BY-SA 4.0), via Wikimedia Commons"]}
-        credit={{ label: "Source on GitHub", href: SITE.repo }}
+        credits={["Reference photos: Syced (CC0), Sven Volkens (CC BY-SA 4.0), via Wikimedia Commons"]}
       />
     </>
   );
@@ -71,48 +66,82 @@ export default function Home() {
 
 function Hero() {
   return (
-    <section id="top" className="relative flex min-h-[100dvh] flex-col items-center justify-center overflow-hidden pt-16">
-      <WakeGlyph className="absolute inset-0 opacity-70" cellSize={13} />
-      <div className={`${wrap} relative flex flex-col items-center text-center`}>
-        <AsciiWordmark
-          lines={WORDMARK_WIDE}
-          label="ugoki lab"
-          className="max-w-full overflow-hidden text-[clamp(4.6px,1.38vw,16px)]"
-        />
-        <h1 className="mt-10 text-4xl font-medium tracking-[-0.035em] leading-[1.05] md:text-6xl">
-          An open lab for physical AI.
+    <section id="top" className="relative overflow-hidden pt-28 pb-16 md:pt-36 md:pb-24">
+      <WakeGlyph className="absolute inset-0 text-foreground opacity-50" cellSize={14} />
+      <div className={`${wrap} relative`}>
+        <p className="flex items-center gap-3 text-[13px] text-muted">
+          <Seal className="size-6 rounded-[5px] text-[13px]" />
+          <span>
+            <span className="font-jp text-foreground">{SITE.kanji}</span> ugoki · a non-profit research lab
+          </span>
+        </p>
+        <h1 className="mt-6 max-w-[14ch] font-display text-5xl font-normal tracking-[-0.025em] leading-[1.02] md:text-[88px]">
+          An open lab for <em className="text-accent">physical AI</em>.
         </h1>
-        <p className="mt-5 max-w-[46ch] text-base leading-relaxed text-muted md:text-lg">
+        <p className="mt-6 max-w-[48ch] text-base leading-relaxed text-muted md:text-lg">
           We build affordable humanoid robots and an open model that designs real hardware. Free for anyone to use.
         </p>
-        <div className="mt-9 flex flex-wrap items-center justify-center gap-3">
+        <div className="mt-8 flex flex-wrap gap-3">
           <a
             href="#join"
-            className="inline-flex h-11 items-center gap-2 bg-foreground px-5 text-[14px] font-medium text-background transition-transform active:translate-y-px"
+            className="inline-flex h-11 items-center gap-2 rounded-[10px] bg-foreground px-5 text-[14px] font-medium text-background transition-transform active:translate-y-px"
           >
             Join the lab <ArrowRight size={15} aria-hidden />
           </a>
           <a
-            href="#work"
-            className="inline-flex h-11 items-center border border-line bg-background/60 px-5 text-[14px] font-medium backdrop-blur-sm transition-colors hover:border-foreground active:translate-y-px"
+            href="#model"
+            className="inline-flex h-11 items-center rounded-[10px] border border-line bg-surface/70 px-5 text-[14px] font-medium backdrop-blur-sm transition-colors hover:border-foreground active:translate-y-px"
           >
-            See the work
+            How the model works
           </a>
         </div>
+        <Reveal className="mt-14 md:mt-20" delay={0.15}>
+          <ModelPlayground />
+        </Reveal>
       </div>
-      <p
-        aria-hidden="true"
-        className="tategaki absolute top-1/2 right-6 hidden -translate-y-1/2 font-jp text-[15px] text-accent lg:block"
-      >
+      <p aria-hidden="true" className="tategaki absolute top-40 right-6 hidden font-jp text-[15px] text-accent xl:block">
         身体を持つ知能
       </p>
     </section>
   );
 }
 
+function OpenBlock() {
+  return (
+    <section aria-label="Open by default" className={`${wrap} pb-20 md:pb-28`}>
+      <Reveal>
+        <div className="relative isolate overflow-hidden rounded-2xl bg-accent px-6 py-16 text-center text-accent-ink md:px-12 md:py-24">
+          <AsciiDitherMedia mode="ascii" cellSize={13} speed={0.7} className="absolute inset-0 -z-10 text-accent-ink opacity-25" />
+          <AsciiWordmark
+            lines={WORDMARK_WIDE}
+            label="ugoki lab"
+            className="mx-auto max-w-full overflow-hidden text-[clamp(4.2px,1.2vw,14px)] [&_pre]:text-accent-ink"
+          />
+          <p className="mx-auto mt-10 max-w-[20ch] font-display text-4xl leading-[1.08] tracking-[-0.02em] md:text-6xl">
+            Physical AI should belong to everyone.
+          </p>
+          <p className="mx-auto mt-5 max-w-[46ch] text-[15px] leading-relaxed opacity-90 md:text-base">
+            Everything we make is free to use: code, model weights, data, CAD and parts lists.
+          </p>
+          <ul className="mt-9 flex flex-wrap justify-center gap-2">
+            {OPEN.map((item) => (
+              <li
+                key={item}
+                className={`rounded-full border border-accent-ink/40 px-4 py-1.5 text-[13px] ${item === "公開" ? "font-jp" : "font-mono"}`}
+              >
+                {item}
+              </li>
+            ))}
+          </ul>
+        </div>
+      </Reveal>
+    </section>
+  );
+}
+
 function About() {
   return (
-    <section id="about" className="border-t border-line py-24 md:py-36">
+    <section id="about" className="py-24 md:py-32">
       <div className={`${wrap} grid gap-14 md:grid-cols-12`}>
         <Reveal className="md:col-span-4">
           <div className="md:sticky md:top-28">
@@ -142,7 +171,7 @@ function About() {
             ))}
           </ol>
           <Reveal>
-            <p className="mt-14 max-w-[52ch] text-xl leading-snug md:text-2xl">
+            <p className="mt-14 max-w-[40ch] font-display text-2xl leading-snug md:text-3xl">
               An open, non-profit lab can work on all three at once, and share every result.
             </p>
           </Reveal>
@@ -152,85 +181,69 @@ function About() {
   );
 }
 
-function BuildMedia({ item }: { item: (typeof BUILD)[number] }) {
-  if ("clip" in item && item.clip) return <Clip src={item.clip} alt={item.alt} />;
-  return (
-    <Image
-      src={item.image!}
-      alt={item.alt}
-      fill
-      sizes="(min-width: 768px) 60vw, 100vw"
-      className="object-cover object-[50%_25%]"
-    />
-  );
-}
-
 function Build() {
-  // Asymmetric 6-column bento: wide, narrow / narrow, wide.
-  const spans = ["md:col-span-4", "md:col-span-2", "md:col-span-2", "md:col-span-4"];
-  const heights = ["h-72 md:h-96", "h-72 md:h-96", "h-64 md:h-80", "h-64 md:h-80"];
+  const { humanoids, model, sim, impact } = BUILD;
+  const card = "flex flex-col overflow-hidden rounded-2xl border border-line bg-surface";
+  const text = "flex flex-1 flex-col justify-between gap-4 p-6 md:p-7";
   return (
-    <section id="build" className="border-t border-line py-24 md:py-32">
+    <section id="build" className="py-24 md:py-32">
       <div className={wrap}>
         <Reveal>
-          <h2 className={`${h2} max-w-[18ch]`}>What we build</h2>
+          <h2 className={h2}>What we build</h2>
         </Reveal>
         <div className="mt-12 grid gap-4 md:grid-cols-6">
-          {BUILD.map((item, i) => (
-            <Reveal key={item.title} delay={(i % 2) * 0.08} className={`${spans[i]} flex flex-col border border-line bg-surface`}>
-              <div className={`relative ${heights[i]} overflow-hidden bg-[#161616]`}>
-                <BuildMedia item={item} />
+          <Reveal className={`${card} md:col-span-4`}>
+            <div className="relative h-72 md:h-96">
+              <Image src={humanoids.image} alt={humanoids.alt} fill sizes="(min-width: 768px) 60vw, 100vw" className="object-cover object-[50%_30%] grayscale" />
+            </div>
+            <div className={text}>
+              <div>
+                <h3 className="font-display text-2xl">{humanoids.title}</h3>
+                <p className="mt-2 max-w-[54ch] leading-relaxed text-muted">{humanoids.body}</p>
               </div>
-              <div className="flex flex-1 flex-col justify-between gap-4 p-6">
-                <div>
-                  <h3 className="text-xl font-medium tracking-[-0.01em]">{item.title}</h3>
-                  <p className="mt-2 max-w-[48ch] leading-relaxed text-muted">{item.body}</p>
-                </div>
-                {"credit" in item && item.credit && <p className="text-[12px] text-muted">{item.credit}</p>}
+              <p className="text-[12px] text-muted">{humanoids.credit}</p>
+            </div>
+          </Reveal>
+          <Reveal delay={0.08} className={`${card} md:col-span-2`}>
+            <div className="relative flex h-72 items-center justify-center bg-background md:h-96">
+              <span className="font-jp text-[110px] leading-none font-bold text-foreground md:text-[140px]" aria-hidden="true">
+                設計
+              </span>
+              <span className="absolute bottom-4 left-5 font-mono text-[11px] tracking-[0.12em] text-muted uppercase">
+                sekkei · design
+              </span>
+            </div>
+            <div className={text}>
+              <div>
+                <h3 className="font-display text-2xl">{model.title}</h3>
+                <p className="mt-2 leading-relaxed text-muted">{model.body}</p>
               </div>
-            </Reveal>
-          ))}
+            </div>
+          </Reveal>
+          <Reveal className={`${card} md:col-span-2`}>
+            <div className="relative h-64 bg-foreground md:h-80">
+              <AsciiDitherMedia mode="dot" cellSize={12} speed={0.8} className="absolute inset-0 text-background opacity-80" />
+            </div>
+            <div className={text}>
+              <div>
+                <h3 className="font-display text-2xl">{sim.title}</h3>
+                <p className="mt-2 leading-relaxed text-muted">{sim.body}</p>
+              </div>
+            </div>
+          </Reveal>
+          <Reveal delay={0.08} className={`${card} md:col-span-4`}>
+            <div className="relative h-64 md:h-80">
+              <Image src={impact.image} alt={impact.alt} fill sizes="(min-width: 768px) 60vw, 100vw" className="object-cover object-[50%_25%] grayscale" />
+            </div>
+            <div className={text}>
+              <div>
+                <h3 className="font-display text-2xl">{impact.title}</h3>
+                <p className="mt-2 max-w-[54ch] leading-relaxed text-muted">{impact.body}</p>
+              </div>
+              <p className="text-[12px] text-muted">{impact.credit}</p>
+            </div>
+          </Reveal>
         </div>
-      </div>
-    </section>
-  );
-}
-
-function Work() {
-  return (
-    <section id="work" className="border-t border-line py-24 md:py-32">
-      <div className={`${wrap} flex flex-col gap-4 md:flex-row md:items-end md:justify-between`}>
-        <Reveal>
-          <h2 className={`${h2} max-w-[16ch]`}>Already built, already open</h2>
-          <p className="mt-4 max-w-[52ch] leading-relaxed text-muted">
-            Five robotics projects written from scratch, MIT-licensed, with tests. Every number comes from the repo.
-          </p>
-        </Reveal>
-        <a href={SITE.github} className="inline-flex items-center gap-2 text-[14px] text-muted hover:text-foreground">
-          All repositories <ArrowUpRight size={14} aria-hidden />
-        </a>
-      </div>
-      <div className="rail-scroll relative mt-12 flex snap-x snap-mandatory gap-4 overflow-x-auto scroll-px-5 px-5 pb-6 md:scroll-px-10 md:px-10 xl:scroll-px-[max(2.5rem,calc((100vw-1400px)/2+2.5rem))] xl:px-[max(2.5rem,calc((100vw-1400px)/2+2.5rem))]">
-        {PROJECTS.map((p) => (
-          <article key={p.name} className="relative w-[min(82vw,400px)] shrink-0 snap-start border border-line bg-surface">
-            <div className="relative aspect-[16/10] overflow-hidden bg-[#161616]">
-              <Clip src={p.clip} alt={`${p.name}: ${p.what}`} />
-            </div>
-            <div className="p-6">
-              <h3 className="font-mono text-[15px] font-medium tracking-[0.06em]">
-                <ScrambleText>{p.name}</ScrambleText>
-              </h3>
-              <p className="mt-1 text-[15px]">{p.what}</p>
-              <p className="mt-3 text-[14px] leading-relaxed text-muted">{p.metric}</p>
-              <a
-                href={p.href}
-                className="mt-5 inline-flex items-center gap-1.5 text-[14px] font-medium underline decoration-line underline-offset-4 transition-colors hover:decoration-accent"
-              >
-                Code on GitHub <ArrowUpRight size={14} aria-hidden />
-              </a>
-            </div>
-          </article>
-        ))}
       </div>
     </section>
   );
@@ -238,40 +251,19 @@ function Work() {
 
 function Model() {
   return (
-    <section id="model" className="border-t border-line py-24 md:py-32">
-      <div className={`${wrap} grid gap-12 md:grid-cols-12 md:items-center`}>
-        <div className="md:col-span-5">
-          <Reveal>
-            <h2 className={h2}>An LLM for physical AI that engineers real devices</h2>
-          </Reveal>
-          <ol className="mt-10 grid gap-6">
-            {PIPELINE.map((s, i) => (
-              <Reveal as="li" key={s.verb} delay={i * 0.06} className="grid grid-cols-[2.5rem_1fr] items-baseline">
-                <span className="font-mono text-[12px] text-muted">{String(i + 1).padStart(2, "0")}</span>
-                <div>
-                  <p className="text-lg font-medium">{s.verb}</p>
-                  <p className="text-[15px] text-muted">{s.body}</p>
-                </div>
-              </Reveal>
-            ))}
-          </ol>
-        </div>
-        <Reveal className="md:col-span-7" delay={0.1}>
-          <figure>
-            <div className="relative aspect-[16/9] overflow-hidden border border-line bg-[#161616]">
-              <Image
-                src="/media/proto-ide.jpg"
-                alt="A generated hardware project open in our prototype’s 3D workspace"
-                fill
-                sizes="(min-width: 768px) 58vw, 100vw"
-                className="object-cover"
-              />
-            </div>
-            <figcaption className="mt-4 max-w-[60ch] text-[14px] leading-relaxed text-muted">
-              Our team’s prototype already turns a device graph into CAD, wiring, firmware and a parts list. The lab
-              trains an open model for it, with open weights, data and evaluations.
-            </figcaption>
-          </figure>
+    <section id="model" className="pb-24 md:pb-32">
+      <div className={wrap}>
+        <Reveal>
+          <h2 className={`${h2} max-w-[18ch]`}>
+            How the open model <em className="text-accent">works</em>
+          </h2>
+          <p className="mt-5 max-w-[56ch] leading-relaxed text-muted">
+            An LLM for physical AI that engineers real devices. Every step is checked by physics before anything is
+            built, and the weights, data and evaluations are open.
+          </p>
+        </Reveal>
+        <Reveal className="mt-12" delay={0.1}>
+          <PipelineFlow />
         </Reveal>
       </div>
     </section>
@@ -280,90 +272,59 @@ function Model() {
 
 function Research() {
   return (
-    <section id="research" className="border-t border-line py-24 md:py-32">
+    <section id="research" className="py-24 md:py-32">
       <div className={wrap}>
         <Reveal>
           <p className={eyebrow}>Research</p>
           <h2 className={`${h2} mt-4 max-w-[20ch]`}>Pre-registered studies, negatives included</h2>
         </Reveal>
         <div className="mt-12 border-t border-line">
-          {RESEARCH.map((r, i) => {
-            const body = (
-              <>
+          {RESEARCH.map((r, i) => (
+            <Reveal key={r.name} delay={i * 0.06}>
+              <div className="grid gap-3 border-b border-line py-8 md:grid-cols-[12rem_1fr_14rem] md:items-baseline md:gap-8">
                 <span className="font-mono text-2xl font-medium tracking-[0.04em] md:text-3xl">{r.name}</span>
-                <span className="text-lg leading-snug md:text-xl">{r.question}</span>
-                <span className="flex items-center justify-between gap-4 text-[14px] text-muted md:justify-end">
-                  {r.status}
-                  {r.href && <ArrowUpRight size={16} aria-hidden className="shrink-0 transition-transform group-hover:-translate-y-0.5 group-hover:translate-x-0.5" />}
-                </span>
-              </>
-            );
-            const cls =
-              "group grid gap-3 border-b border-line py-8 md:grid-cols-[12rem_1fr_16rem] md:items-baseline md:gap-8";
-            return (
-              <Reveal key={r.name} delay={i * 0.06}>
-                {r.href ? (
-                  <a href={r.href} className={`${cls} transition-colors hover:bg-surface`}>
-                    {body}
-                  </a>
-                ) : (
-                  <div className={cls}>{body}</div>
-                )}
-              </Reveal>
-            );
-          })}
+                <span className="font-display text-xl leading-snug md:text-2xl">{r.question}</span>
+                <span className="text-[14px] text-muted md:text-right">{r.status}</span>
+              </div>
+            </Reveal>
+          ))}
         </div>
       </div>
     </section>
   );
 }
 
-function OpenByDefault() {
-  const words = [...OPEN, ...OPEN];
-  return (
-    <section id="open" className="overflow-hidden border-t border-line py-24 md:py-36">
-      <div className={wrap}>
-        <Reveal>
-          <p className="max-w-[22ch] text-4xl font-medium tracking-[-0.035em] leading-[1.06] md:text-7xl">
-            Everything we make is free to use: code, weights, data and parts lists.
-          </p>
-        </Reveal>
-      </div>
-      <div className="mt-16 flex w-max marquee-track" aria-hidden="true">
-        {words.map((w, i) => (
-          <span
-            key={`${w}-${i}`}
-            className={`flex items-center gap-10 pr-10 text-3xl tracking-[-0.02em] text-muted md:text-5xl ${w === "公開" ? "font-jp text-accent" : "font-mono"}`}
-          >
-            {w}
-            <span className="inline-block size-2 bg-line" />
-          </span>
-        ))}
-      </div>
-      <p className="sr-only">{OPEN.slice(0, 4).join(", ")}.</p>
-    </section>
-  );
-}
-
 function Team() {
   return (
-    <section id="team" className="border-t border-line py-24 md:py-32">
+    <section id="team" className="pb-24 md:pb-32">
       <div className={wrap}>
         <Reveal>
-          <h2 className={`${h2} max-w-[20ch]`}>Defense tech, GovTech and ML research</h2>
-          <p className="mt-4 max-w-[52ch] leading-relaxed text-muted">
-            The team behind the lab, and what it already runs on.
+          <h2 className={`${h2} max-w-[20ch]`}>
+            Who builds the <em className="text-accent">lab</em>
+          </h2>
+          <p className="mt-5 max-w-[52ch] leading-relaxed text-muted">
+            A team from defense tech, GovTech and ML research, and what the lab already runs on.
           </p>
         </Reveal>
-        <dl className="mt-14 grid grid-cols-1 gap-y-10 sm:grid-cols-2 lg:grid-cols-5">
-          {TEAM.map((t, i) => (
-            <Reveal key={t.label} delay={i * 0.06} className="border-l border-line pr-6 pl-5">
-              <dt className="text-[13px] text-muted">{t.label}</dt>
-              <dd className="mt-3 text-3xl font-medium tracking-[-0.03em] md:text-[34px]">{t.big}</dd>
-              <dd className="mt-3 text-[14px] leading-relaxed text-muted">{t.body}</dd>
+        <dl className="mt-14 grid grid-cols-2 gap-x-6 gap-y-12 overflow-x-clip lg:grid-cols-4">
+          {STATS.map((s, i) => (
+            <Reveal key={s.label} delay={i * 0.06} className="border-t border-line pt-6">
+              <dd className="font-display text-5xl tracking-[-0.02em] md:text-6xl">
+                <NumberTicker value={s.value} suffix={s.suffix} duration={1.2} delay={i * 0.12} />
+              </dd>
+              <dt className="mt-3 text-[15px] font-medium">{s.label}</dt>
+              <dd className="mt-2 max-w-[30ch] text-[14px] leading-relaxed text-muted">{s.body}</dd>
             </Reveal>
           ))}
         </dl>
+        <div className="mt-12 grid gap-4 md:grid-cols-2">
+          {FACTS.map((f, i) => (
+            <Reveal key={f.big} delay={i * 0.06} className="rounded-2xl border border-line bg-surface p-7">
+              <p className="font-display text-3xl tracking-[-0.01em] md:text-4xl">{f.big}</p>
+              <p className="mt-3 max-w-[44ch] leading-relaxed text-muted">{f.label}</p>
+            </Reveal>
+          ))}
+        </div>
       </div>
     </section>
   );
@@ -371,7 +332,7 @@ function Team() {
 
 function Roadmap() {
   return (
-    <section id="roadmap" className="border-t border-line py-24 md:py-32">
+    <section id="roadmap" className="pb-24 md:pb-32">
       <div className={wrap}>
         <Reveal>
           <p className={eyebrow}>Roadmap</p>
@@ -387,7 +348,7 @@ function Roadmap() {
                 {r.when}
                 {i === 0 && <span className="ml-2 text-accent">now</span>}
               </p>
-              <h3 className="mt-3 text-2xl font-medium tracking-[-0.02em]">{r.title}</h3>
+              <h3 className="mt-3 font-display text-2xl">{r.title}</h3>
               <p className="mt-3 max-w-[40ch] leading-relaxed text-muted">{r.body}</p>
             </Reveal>
           ))}
@@ -399,21 +360,24 @@ function Roadmap() {
 
 function Join() {
   return (
-    <section id="join" className="border-t border-line py-24 md:py-36">
+    <section id="join" className="py-24 md:py-32">
       <div className={`${wrap} grid gap-14 md:grid-cols-12`}>
         <Reveal className="md:col-span-7">
-          <h2 className="text-4xl font-medium tracking-[-0.035em] leading-[1.04] md:text-7xl">
-            Build open physical AI with us.
+          <h2 className="font-display text-5xl tracking-[-0.025em] leading-[1.02] md:text-[80px]">
+            Build open physical AI <em className="text-accent">with us</em>.
           </h2>
-          <a
-            href={SITE.contact}
-            className="mt-10 inline-flex h-12 items-center gap-2 bg-foreground px-6 text-[15px] font-medium text-background transition-transform active:translate-y-px"
-          >
-            Join the lab <ArrowRight size={16} aria-hidden />
-          </a>
-          <p className="mt-4 max-w-[46ch] text-[14px] leading-relaxed text-muted">
-            Opens a short note on GitHub. Tell us who you are and how you’d like to help.
-          </p>
+          {SITE.contact ? (
+            <a
+              href={SITE.contact}
+              className="mt-10 inline-flex h-12 items-center gap-2 rounded-[10px] bg-foreground px-6 text-[15px] font-medium text-background transition-transform active:translate-y-px"
+            >
+              Join the lab <ArrowRight size={16} aria-hidden />
+            </a>
+          ) : (
+            <p className="mt-10 max-w-[46ch] leading-relaxed text-muted">
+              Contact details are coming soon.
+            </p>
+          )}
         </Reveal>
         <Reveal className="md:col-span-5" delay={0.1}>
           <p className="text-[13px] text-muted">We are looking for</p>

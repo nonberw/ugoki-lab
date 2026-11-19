@@ -8,11 +8,12 @@ The website of **Ugoki Lab**, a non-profit research lab for physical AI: afforda
 
 ## What's on the site
 
-- **Hero:** an ASCII wordmark that decodes itself from noise, over a field of glyphs that follows your cursor.
+- **Hero:** a model playground. Pick a prompt and watch the plan type out. It is labelled as a concept, because the open model is still in training.
+- **Open by default:** a vermilion block with the ASCII wordmark decoding itself over a flowing ASCII field.
 - **What we build:** humanoids, the open engineering model, sim-to-real research, problems that matter.
-- **Work:** ARMageddon, ZOOMIES, COPYCAT, YOINK and SPUD, each with a looping clip and its headline number straight from the repo.
+- **How the model works:** Describe, Plan, Generate, Verify, Build, joined by pulsing beams.
 - **Research:** SUSS, LISTEN and VIBES, all pre-registered.
-- **Roadmap, team, and how to join.**
+- **Team, roadmap and how to join.**
 
 Light and dark themes (follows the system, with a toggle), reduced-motion support, and it holds up on a phone.
 
@@ -32,20 +33,27 @@ Then open http://localhost:3000. A production build is `npm run build && npm sta
 | All copy and data (projects, team, roadmap, links) | `src/lib/content.ts` |
 | Page sections | `src/app/page.tsx` |
 | Colors and fonts | `src/app/globals.css`, `src/app/layout.tsx` |
-| Robot clips and photos | `public/media/` |
+| Reference photos | `public/media/` |
 | ASCII wordmark generator | `scripts/wordmark.mjs` |
 
-To change text, edit `content.ts` and nothing else. To point "Join the lab" at an email instead of GitHub, change `SITE.contact`.
+To change text, edit `content.ts` and nothing else. To turn on the "Join the lab" button, set `SITE.contact` to a `mailto:` link.
 
 ## Stack
 
-Next.js 16 (App Router, static), Tailwind CSS v4, Motion, Phosphor icons, Geist and Noto Serif JP. Deployed on Vercel.
+Next.js 16 (App Router, static), Tailwind CSS v4, Motion, Phosphor icons, Newsreader, Geist and Noto Serif JP. Deployed on Vercel.
 
-Three components come from [21st.dev](https://21st.dev) and were adapted for this site: Scramble Text (dqnamo), Background ASCII Wake (nikolas-sapa) and Footer with Big Wordmark (vilqor, MIT).
+Components from [21st.dev](https://21st.dev), adapted for this site (theme tokens, reduced motion, typing):
+
+- Background ASCII Wake and Background ASCII Dither (nikolas-sapa)
+- Count Up Animation (wensity)
+- Typing Text (hyperiux)
+- Segmented Control (halaska-studio, MIT)
+- Animated Beam (klyv-ui, MIT)
+- Footer with Big Wordmark (vilqor, MIT)
 
 ## Credits
 
-Two reference photos come from Wikimedia Commons: humanoid robots at Science Square Tsukuba by Syced (CC0) and a humanoid robot at DASA by Sven Volkens (CC BY-SA 4.0). They show the kind of robot we work toward, not our own hardware. All robot clips are from our own open-source projects.
+Two reference photos come from Wikimedia Commons: humanoid robots at Science Square Tsukuba by Syced (CC0) and a humanoid robot at DASA by Sven Volkens (CC BY-SA 4.0). They show the kind of robot we work toward, not our own hardware.
 
 ## License
 

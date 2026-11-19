@@ -4,8 +4,8 @@
 
 /* Monochrome plus one accent: shu, the vermilion of a hanko seal. */
 :root {
-  --background: #f3f3f1;
-  --surface: #fafaf8;
+  --background: #efeeec;
+  --surface: #fbfbfa;
   --foreground: #121212;
   --muted: #62625f;
   --line: #d9d9d5;
@@ -36,6 +36,34 @@
   --font-sans: var(--font-geist-sans), ui-sans-serif, system-ui, sans-serif;
   --font-mono: var(--font-geist-mono), ui-monospace, monospace;
   --font-jp: var(--font-noto-serif-jp), "Yu Mincho", "Hiragino Mincho ProN", serif;
+  --font-display: var(--font-newsreader), var(--font-noto-serif-jp), Georgia, serif;
+}
+
+/* Shape rule for the whole site: cards 16px, buttons and controls 10px, pills fully round. */
+
+/* Diagonal hatch strip between sections, after the geko.sh dividers. */
+.hatch {
+  height: 28px;
+  background-image: repeating-linear-gradient(
+    -45deg,
+    var(--line) 0 1px,
+    transparent 1px 9px
+  );
+  border-block: 1px solid var(--line);
+}
+
+/* Pulse travelling along an AnimatedBeam path. */
+@keyframes beam-dash {
+  to {
+    stroke-dashoffset: var(--beam-travel);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .motion-safe-only {
+    animation: none !important;
+    opacity: 0;
+  }
 }
 
 html {
@@ -60,27 +88,8 @@ body {
   letter-spacing: 0.35em;
 }
 
-@keyframes marquee {
-  to {
-    transform: translateX(-50%);
-  }
-}
-
-.marquee-track {
-  animation: marquee 38s linear infinite;
-}
-
 @media (prefers-reduced-motion: reduce) {
   html {
     scroll-behavior: auto;
   }
-  .marquee-track {
-    animation: none;
-  }
-}
-
-/* Thin, quiet scrollbar for the project rail. */
-.rail-scroll {
-  scrollbar-width: thin;
-  scrollbar-color: var(--line) transparent;
 }
