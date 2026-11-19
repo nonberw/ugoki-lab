@@ -1,26 +1,86 @@
 @import "tailwindcss";
 
+@custom-variant dark (&:where(.dark, .dark *));
+
+/* Monochrome plus one accent: shu, the vermilion of a hanko seal. */
 :root {
-  --background: #ffffff;
-  --foreground: #171717;
+  --background: #f3f3f1;
+  --surface: #fafaf8;
+  --foreground: #121212;
+  --muted: #62625f;
+  --line: #d9d9d5;
+  --accent: #c13a22;
+  --accent-ink: #fafaf8;
+}
+
+.dark {
+  --background: #0c0c0c;
+  --surface: #141414;
+  --foreground: #ececea;
+  --muted: #94948f;
+  --line: #262625;
+  --accent: #e0503a;
+  --accent-ink: #0c0c0c;
 }
 
 @theme inline {
   --color-background: var(--background);
+  --color-surface: var(--surface);
   --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
+  --color-muted: var(--muted);
+  --color-line: var(--line);
+  --color-accent: var(--accent);
+  --color-accent-ink: var(--accent-ink);
+  --color-primary: var(--foreground);
+  --color-muted-foreground: var(--muted);
+  --font-sans: var(--font-geist-sans), ui-sans-serif, system-ui, sans-serif;
+  --font-mono: var(--font-geist-mono), ui-monospace, monospace;
+  --font-jp: var(--font-noto-serif-jp), "Yu Mincho", "Hiragino Mincho ProN", serif;
 }
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
-  }
+html {
+  scroll-behavior: smooth;
+  scroll-padding-top: 5rem;
 }
 
 body {
   background: var(--background);
   color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+}
+
+::selection {
+  background: var(--accent);
+  color: var(--accent-ink);
+}
+
+/* Vertical Japanese lines, set the traditional way. */
+.tategaki {
+  writing-mode: vertical-rl;
+  text-orientation: upright;
+  letter-spacing: 0.35em;
+}
+
+@keyframes marquee {
+  to {
+    transform: translateX(-50%);
+  }
+}
+
+.marquee-track {
+  animation: marquee 38s linear infinite;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto;
+  }
+  .marquee-track {
+    animation: none;
+  }
+}
+
+/* Thin, quiet scrollbar for the project rail. */
+.rail-scroll {
+  scrollbar-width: thin;
+  scrollbar-color: var(--line) transparent;
 }

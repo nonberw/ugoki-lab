@@ -1,36 +1,52 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# Ugoki Lab
 
-## Getting Started
+> 動き (ugoki) means "movement" in Japanese. We put intelligence into things that move, and we give it away.
 
-First, run the development server:
+The website of **Ugoki Lab**, a non-profit research lab for physical AI: affordable humanoid robots, an open model that designs real hardware, and pre-registered research. Everything we make is free to use.
+
+**Live:** https://ugoki-lab.vercel.app
+
+## What's on the site
+
+- **Hero:** an ASCII wordmark that decodes itself from noise, over a field of glyphs that follows your cursor.
+- **What we build:** humanoids, the open engineering model, sim-to-real research, problems that matter.
+- **Work:** ARMageddon, ZOOMIES, COPYCAT, YOINK and SPUD, each with a looping clip and its headline number straight from the repo.
+- **Research:** SUSS, LISTEN and VIBES, all pre-registered.
+- **Roadmap, team, and how to join.**
+
+Light and dark themes (follows the system, with a toggle), reduced-motion support, and it holds up on a phone.
+
+## Run it
 
 ```bash
+npm install
 npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+Then open http://localhost:3000. A production build is `npm run build && npm start`.
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+## Where things live
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+| What | Where |
+|---|---|
+| All copy and data (projects, team, roadmap, links) | `src/lib/content.ts` |
+| Page sections | `src/app/page.tsx` |
+| Colors and fonts | `src/app/globals.css`, `src/app/layout.tsx` |
+| Robot clips and photos | `public/media/` |
+| ASCII wordmark generator | `scripts/wordmark.mjs` |
 
-## Learn More
+To change text, edit `content.ts` and nothing else. To point "Join the lab" at an email instead of GitHub, change `SITE.contact`.
 
-To learn more about Next.js, take a look at the following resources:
+## Stack
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+Next.js 16 (App Router, static), Tailwind CSS v4, Motion, Phosphor icons, Geist and Noto Serif JP. Deployed on Vercel.
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+Three components come from [21st.dev](https://21st.dev) and were adapted for this site: Scramble Text (dqnamo), Background ASCII Wake (nikolas-sapa) and Footer with Big Wordmark (vilqor, MIT).
 
-## Deploy on Vercel
+## Credits
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+Two reference photos come from Wikimedia Commons: humanoid robots at Science Square Tsukuba by Syced (CC0) and a humanoid robot at DASA by Sven Volkens (CC BY-SA 4.0). They show the kind of robot we work toward, not our own hardware. All robot clips are from our own open-source projects.
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+## License
+
+Code: MIT, see [LICENSE](LICENSE). The CC BY-SA photo keeps its own license.
